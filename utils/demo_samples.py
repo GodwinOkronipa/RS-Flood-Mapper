@@ -1,19 +1,19 @@
 """
-Realistic georeferenced remote sensing demonstration scenarios based on historic flood disasters:
-  1. Indus River Basin Mega-Flood (Sindh, Pakistan - 2022)
-  2. Houston / Buffalo Bayou Urban Storm Surge (Hurricane Harvey, Texas - 2017)
-  3. Ahr Valley Flash Flood & Gorge Surge (Rhineland-Palatinate, Germany - 2021)
+Georeferenced flood scenarios focused on Ghana and West Africa:
+  1. Akosombo Dam Spillage (Volta Region, Ghana - October 2023)
+  2. White Volta & Bagre Dam Basin Overflow (Northern Region, Ghana)
+  3. Greater Accra Flash Flood (Odaw River & Kwame Nkrumah Circle, Ghana)
 
-Includes real-world latitude/longitude bounding boxes and geotransforms to overlay onto OpenStreetMap.
+Provides real GPS coordinates and bounding boxes for OpenStreetMap overlays.
 """
 
 from typing import Dict, List, Tuple
 import numpy as np
 
 
-def generate_demo_scenario(scenario_type: str = "river") -> Tuple[np.ndarray, np.ndarray, Dict]:
+def generate_demo_scenario(scenario_type: str = "volta") -> Tuple[np.ndarray, np.ndarray, Dict]:
     """
-    Generate realistic multi-spectral satellite imagery and georeferencing metadata.
+    Generate synthetic multi-spectral imagery matching Ghana flood contexts.
 
     Returns
     -------
@@ -22,95 +22,95 @@ def generate_demo_scenario(scenario_type: str = "river") -> Tuple[np.ndarray, np
     feature_stack : np.ndarray
         float32 multi-band stack (256, 256, 4): [R, G, B, NDWI]
     metadata : dict
-        Includes geographic bounding box, center coordinates, and recommended route waypoints.
+        Geographic bounding box, center coordinates, and waypoints.
     """
-    np.random.seed(101 if scenario_type == "river" else (202 if scenario_type == "coastal" else 303))
+    np.random.seed(101 if scenario_type == "volta" else (202 if scenario_type == "white_volta" else 303))
     h, w = 256, 256
     y, x = np.mgrid[0:h, 0:w]
 
     flood_mask = np.zeros((h, w), dtype=bool)
 
-    if scenario_type == "river":
-        scenario_name = "Indus River Basin Inundation (Sindh, Pakistan)"
-        desc = "Catastrophic 2022 monsoon floodwaters overflowing the Indus River, inundating agrarian settlements and submerging secondary access routes."
+    if scenario_type == "volta":
+        scenario_name = "Akosombo Dam Spillage (Volta Region, Ghana - 2023)"
+        desc = "Controlled spillage from Akosombo Dam overflowing the Lower Volta River basin, inundating Mepe, Battor, and surrounding agrarian communities."
         
-        # Real-world coordinates (Dadu / Sehwan District, Sindh, Pakistan)
-        bounds = [26.70, 67.95, 26.92, 68.22]  # [south_lat, west_lon, north_lat, east_lon]
-        center = [26.81, 68.08]
-        start_label = "Stranded Village (Dadu Sub-district)"
-        goal_label = "UN High-Ground Relief Camp (Sehwan Ridge)"
+        # Lower Volta basin near Mepe / Battor / Sogakope
+        bounds = [5.92, 0.50, 6.08, 0.68]  # [south, west, north, east]
+        center = [6.00, 0.59]
+        start_label = "Mepe Submerged Community"
+        goal_label = "Sogakope Elevated Relief Center"
 
-        # Meandering river channel + flood expansion
-        center_line = 128 + 42 * np.sin(x / 28.0) + 18 * np.cos(x / 14.0)
+        # Winding Lower Volta River channel
+        center_line = 130 + 40 * np.sin(x / 30.0) + 16 * np.cos(x / 16.0)
         dist_to_river = np.abs(y - center_line)
-        flood_mask = dist_to_river < (30 + 14 * np.sin(x / 18.0))
+        flood_mask = dist_to_river < (32 + 12 * np.sin(x / 20.0))
         
-        # Elevated arterial highway bridge (N-55 Indus Highway)
-        bridge_mask = (np.abs(x - 128) < 9) & (dist_to_river < 45)
+        # Elevated road corridor (N1 highway bridge section)
+        bridge_mask = (np.abs(x - 128) < 8) & (dist_to_river < 44)
         flood_mask[bridge_mask] = False
 
-        start_coord = (145, 25)
+        start_coord = (145, 30)
         goal_coord = (35, 220)
 
-    elif scenario_type == "coastal":
-        scenario_name = "Buffalo Bayou & Urban Surge (Houston, TX - Hurricane Harvey)"
-        desc = "Extreme storm surge and reservoir release overtopping Buffalo Bayou, flooding urban neighborhoods and highway underpasses."
+    elif scenario_type == "white_volta":
+        scenario_name = "White Volta & Bagre Dam Overflow (Northern Region, Ghana)"
+        desc = "Annual opening of the Bagre Dam combined with monsoon rain, flooding riverine farmland around the White Volta basin near Pwalugu."
         
-        # Real-world coordinates (Downtown Houston / Buffalo Bayou Park)
-        bounds = [29.72, -95.44, 29.80, -95.32]
-        center = [29.76, -95.38]
-        start_label = "Inundated Residential Ward"
-        goal_label = "Emergency Evacuation Center (George R. Brown)"
+        # Pwalugu / Walewale White Volta corridor
+        bounds = [10.38, -0.92, 10.52, -0.78]
+        center = [10.45, -0.85]
+        start_label = "Pwalugu Lowland Farmland"
+        goal_label = "Walewale District Hospital"
 
-        # Bayou winding through urban grid
-        bayou_line = 110 + 0.35 * x + 30 * np.sin(x / 32.0)
-        flood_mask = (y > bayou_line - 15) & (y < bayou_line + 45)
+        # River floodplain
+        river_line = 115 + 0.3 * x + 28 * np.sin(x / 35.0)
+        flood_mask = (y > river_line - 18) & (y < river_line + 42)
 
-        # Elevated freeway overpasses (I-45 / I-10 interchange)
-        freeway_overpass = (np.abs(y - 120) < 6) & (x > 60) & (x < 200)
-        flood_mask[freeway_overpass] = False
+        # Elevated N10 Tamale-Bolgatanga highway
+        highway = (np.abs(y - 120) < 6) & (x > 50) & (x < 205)
+        flood_mask[highway] = False
 
-        start_coord = (185, 30)
+        start_coord = (180, 35)
         goal_coord = (40, 215)
 
-    else:  # agricultural flash flood / European valley
-        scenario_name = "Ahr Valley Flash Flood (Rhineland-Palatinate, Germany)"
-        desc = "Severe 2021 European flash flooding following extreme rainfall, channeling down the steep river gorge and cutting bridge connections."
+    else:  # Greater Accra flash flood
+        scenario_name = "Greater Accra Flash Flood (Odaw River Basin, Ghana)"
+        desc = "Intense seasonal rainfall overflowing the Odaw drain and Korle Lagoon, flooding low-lying areas around Kwame Nkrumah Circle."
         
-        # Real-world coordinates (Bad Neuenahr-Ahrweiler, Germany)
-        bounds = [50.51, 7.04, 50.58, 7.18]
-        center = [50.54, 7.11]
-        start_label = "Gorge Settlement (Isolated Sector)"
-        goal_label = "Hilltop Emergency Hospital (Grafschaft)"
+        # Kwame Nkrumah Circle / Odaw Basin / Alajo
+        bounds = [5.54, -0.25, 5.62, -0.16]
+        center = [5.58, -0.21]
+        start_label = "Kwame Nkrumah Circle / Alajo"
+        goal_label = "Ridge Hospital Emergency Complex"
 
-        # Winding gorge valley
-        gorge_line = 135 + 50 * np.sin(x / 25.0)
-        dist_gorge = np.abs(y - gorge_line)
-        flood_mask = dist_gorge < (24 + 10 * np.cos(x / 16.0))
+        # Odaw drainage corridor
+        drain_line = 130 + 45 * np.sin(x / 26.0)
+        dist_drain = np.abs(y - drain_line)
+        flood_mask = dist_drain < (26 + 10 * np.cos(x / 18.0))
 
-        # Secondary mountain ridge road
-        ridge_road = np.abs(y - 65) < 7
+        # Elevated Ring Road / Independence Avenue corridor
+        ridge_road = np.abs(y - 70) < 6
         flood_mask[ridge_road] = False
 
-        start_coord = (165, 40)
+        start_coord = (165, 45)
         goal_coord = (35, 130)
 
-    # Realistic Satellite Multi-spectral synthesis
+    # Multi-spectral satellite simulation
     base_r = np.random.normal(88, 7, (h, w))
     base_g = np.random.normal(132, 10, (h, w))
     base_b = np.random.normal(68, 8, (h, w))
 
-    # Arterial transport network (roads appear brighter gray in optical satellite)
+    # Roads
     roads = (np.abs(y - 110) < 3) | (np.abs(x - 128) < 3)
     base_r[roads] = 165
     base_g[roads] = 165
     base_b[roads] = 165
 
-    # Realistic turbid water body (Sentinel-2 B02/B03/B04 reflectance with sediment)
+    # Turbid water (sediment-rich floodwater)
     turbidity = np.random.normal(0, 5, (h, w))
-    base_r[flood_mask] = 32 + turbidity[flood_mask]
+    base_r[flood_mask] = 34 + turbidity[flood_mask]
     base_g[flood_mask] = 68 + turbidity[flood_mask]
-    base_b[flood_mask] = 118 + turbidity[flood_mask]
+    base_b[flood_mask] = 115 + turbidity[flood_mask]
 
     rgb_disp = np.stack([
         np.clip(base_r, 0, 255).astype(np.uint8),
@@ -131,13 +131,13 @@ def generate_demo_scenario(scenario_type: str = "river") -> Tuple[np.ndarray, np
     metadata = {
         "scenario_name": scenario_name,
         "description": desc,
-        "filename": f"sentinel_{scenario_type}_scene.tif",
+        "filename": f"ghana_{scenario_type}_sentinel.tif",
         "dimensions": (h, w),
         "ground_truth_flood": flood_mask,
         "recommended_start": start_coord,
         "recommended_goal": goal_coord,
-        "geo_bounds": bounds,  # [south, west, north, east]
-        "geo_center": center,   # [lat, lon]
+        "geo_bounds": bounds,
+        "geo_center": center,
         "start_label": start_label,
         "goal_label": goal_label,
     }
@@ -154,11 +154,8 @@ def pixel_to_latlon(
 ) -> Tuple[float, float]:
     """
     Map image pixel (row, col) to real-world WGS84 (latitude, longitude).
-    geo_bounds: [south_lat, west_lon, north_lat, east_lon]
     """
     s_lat, w_lon, n_lat, e_lon = geo_bounds
-    # row 0 is north (top), row height is south (bottom)
     lat = n_lat - (row / height) * (n_lat - s_lat)
-    # col 0 is west (left), col width is east (right)
     lon = w_lon + (col / width) * (e_lon - w_lon)
     return round(float(lat), 6), round(float(lon), 6)

@@ -175,21 +175,21 @@ def load_rf_classifier():
 def main():
     # Sidebar
     with st.sidebar:
-        st.header("⚙️ Interface & Display")
+        st.header("Interface Theme")
         theme_choice = st.radio(
-            "Theme Mode",
-            ["🌙 Dark Mission Control", "☀️ Light Operations Center"],
+            "Theme",
+            ["Dark Mode", "Light Mode"],
             index=0
         )
         is_dark = "Dark" in theme_choice
         theme_str = "Dark" if is_dark else "Light"
 
         st.markdown("---")
-        st.header("🛰️ Data Ingestion Pipeline")
+        st.header("Data Source")
         
         input_source = st.radio(
-            "Data Source",
-            ["Historic Satellite Disaster Benchmarks", "Upload Remote Sensing Imagery"],
+            "Source",
+            ["Ghana Flood Scenarios", "Upload Satellite Imagery"],
             index=0
         )
 
@@ -200,20 +200,20 @@ def main():
         default_start = (140, 20)
         default_goal = (30, 220)
 
-        if input_source == "Historic Satellite Disaster Benchmarks":
+        if input_source == "Ghana Flood Scenarios":
             scenario = st.selectbox(
-                "Disaster Benchmark Scenario",
+                "Flood Scenario",
                 [
-                    "🇵🇰 Indus River Mega-Flood (Sindh, Pakistan - 2022)",
-                    "🇺🇸 Buffalo Bayou Storm Surge (Houston, TX - Hurricane Harvey)",
-                    "🇩🇪 Ahr Valley Flash Flood (Rhineland, Germany - 2021)"
+                    "🇬🇭 Akosombo Dam Spillage (Volta Region - 2023)",
+                    "🇬🇭 White Volta & Bagre Dam Overflow (Northern Region)",
+                    "🇬🇭 Greater Accra Flash Flood (Odaw Basin & Circle)"
                 ],
                 index=0
             )
             key_map = {
-                "🇵🇰 Indus River Mega-Flood (Sindh, Pakistan - 2022)": "river",
-                "🇺🇸 Buffalo Bayou Storm Surge (Houston, TX - Hurricane Harvey)": "coastal",
-                "🇩🇪 Ahr Valley Flash Flood (Rhineland, Germany - 2021)": "agricultural"
+                "🇬🇭 Akosombo Dam Spillage (Volta Region - 2023)": "volta",
+                "🇬🇭 White Volta & Bagre Dam Overflow (Northern Region)": "white_volta",
+                "🇬🇭 Greater Accra Flash Flood (Odaw Basin & Circle)": "accra"
             }
             scenario_key = key_map[scenario]
             rgb_img, features, meta = generate_demo_scenario(scenario_key)
@@ -221,7 +221,7 @@ def main():
             default_start = meta.get("recommended_start", (140, 20))
             default_goal = meta.get("recommended_goal", (30, 220))
             
-            st.info(f"📍 **Ground Context:** {meta.get('description', '')}")
+            st.info(f"**Context:** {meta.get('description', '')}")
 
         else:
             uploaded_file = st.file_uploader(
@@ -296,27 +296,19 @@ def main():
     # Apply Responsive Theme Styles
     inject_custom_styles(is_dark)
 
-    # Top Mission-Control Banner
+    # Top Header
     st.markdown("""
     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 2.3rem;">🌊</span>
+            <span style="font-size: 2rem;">🌊</span>
             <div>
-                <h1 style="margin: 0; font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;">
-                    RS Flood Mapper & Safe Route Navigator
+                <h1 style="margin: 0; font-size: 1.7rem; font-weight: 700;">
+                    Remote Sensing Flood Mapper
                 </h1>
                 <p style="margin: 0; font-size: 0.88rem; opacity: 0.85;">
-                    Satellite Disaster Decision Support • OpenStreetMap Evacuation Routing • UN SDG 11 & 13
+                    Satellite Inundation Detection & Safe Route Navigation
                 </p>
             </div>
-        </div>
-        <div style="margin-top: 6px;">
-            <span style="border: 1px solid #0284c7; padding: 4px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 600; color: #0284c7;">
-                🗺️ OpenStreetMap Active
-            </span>
-            <span style="border: 1px solid #16a34a; padding: 4px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 600; color: #16a34a; margin-left: 6px;">
-                ⚡ A* Graph Routing
-            </span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -424,16 +416,16 @@ def main():
 
     # Tab 0: Interactive OpenStreetMap
     with tab_osm:
-        st.subheader("🗺️ Live Georeferenced OpenStreetMap Disaster Response")
+        st.subheader("OpenStreetMap Evacuation Route")
         st.markdown(r"""
-        Interactive OpenStreetMap view showing real-world flood inundation perimeters, emergency distress origin, 
-        relief shelter destination, and the **A* computed safe evacuation route** drawn on the street network.
+        Georeferenced satellite flood layer overlaid on OpenStreetMap. 
+        The cyan path shows the calculated safe evacuation route connecting the origin to the shelter.
         """)
 
         col_m1, col_m2 = st.columns([4, 1])
         with col_m2:
-            st.markdown("#### Map Information")
-            geo_bounds = meta.get("geo_bounds", [26.70, 67.95, 26.92, 68.22])
+            st.markdown("#### Route Details")
+            geo_bounds = meta.get("geo_bounds", [5.92, 0.50, 6.08, 0.68])
             s_row, s_col = start_pt
             g_row, g_col = goal_pt
             s_lat, s_lon = pixel_to_latlon(s_row, s_col, h, w, geo_bounds)

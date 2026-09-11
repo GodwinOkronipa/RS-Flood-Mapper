@@ -44,8 +44,8 @@ def generate_interactive_osm_map(
     -------
     folium.Map instance ready for rendering with streamlit-folium.
     """
-    geo_bounds = metadata.get("geo_bounds", [26.70, 67.95, 26.92, 68.22])
-    geo_center = metadata.get("geo_center", [26.81, 68.08])
+    geo_bounds = metadata.get("geo_bounds", [5.92, 0.50, 6.08, 0.68])
+    geo_center = metadata.get("geo_center", [6.00, 0.59])
     s_lat, w_lon, n_lat, e_lon = geo_bounds
     h, w = flood_mask.shape
 

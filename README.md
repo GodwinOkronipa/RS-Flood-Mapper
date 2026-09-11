@@ -101,17 +101,17 @@ Evaluation performed on synthetic and co-registered multi-spectral satellite flo
 
 ## 🌟 Key Capabilities
 
-1. **🗺️ Live OpenStreetMap (OSM) Integration**: Georeferences satellite flood boundaries directly onto street-level OpenStreetMap tiles and high-res satellite basemaps. Plots A* computed evacuation paths on real road networks with GPS waypoints.
-2. **🌓 Light & Dark Theme Toggle**: Switch seamlessly between Mission Control (Dark) and Operations Center (Light) visual themes.
-3. **📱 Mobile-Responsive Architecture**: Fluid multi-card HUD, adaptive tab layouts, and touch-optimized controls designed for mobile phone screens and tablets.
-4. **🇵🇰 🇺🇸 🇩🇪 Historic Disaster Benchmarks**: Pre-loaded with real-world disaster georeferences:
-   - *Indus River Basin Mega-Flood* (Sindh, Pakistan — 2022)
-   - *Buffalo Bayou Storm Surge* (Houston, TX — Hurricane Harvey 2017)
-   - *Ahr Valley Flash Flood* (Rhineland-Palatinate, Germany — 2021)
-5. **🛰️ Multi-Format Ingestion**: Ingests **GeoTIFF / TIFF (`.tif`, `.tiff`)**, **PNG**, **JPG**, **WEBP**, **BMP**, and NumPy arrays (**`.npy`, `.npz`**).
-6. **🧠 Explainable AI (XAI)**: Feature importance analysis detailing spectral band weight distributions (NDWI vs NIR vs SAR VV).
-7. **🚨 Mission-Control HUD**: Instant calculation of flooded acreage, safe land percentages, and crisis severity ratings (Critical / Elevated / Moderate / Minimal).
-8. **💾 Automated Situation Briefing**: Machine-readable JSON export conforming to UN-OCHA disaster information standards.
+1. **🗺️ OpenStreetMap (OSM) Integration**: Overlays satellite flood masks onto OpenStreetMap street tiles and satellite basemaps. Plots A* evacuation paths on real road networks with GPS coordinates.
+2. **🌓 Light & Dark Theme**: Toggle between Dark Mode and Light Mode.
+3. **📱 Mobile-Responsive**: Fluid grid layout and touch-friendly controls that adapt to phone and tablet viewports.
+4. **🇬🇭 Ghana Flood Scenarios**: Pre-configured with real geographic coordinates for major Ghana flood events:
+   - *Akosombo Dam Spillage* (Volta Region, Ghana - 2023)
+   - *White Volta & Bagre Dam Basin Overflow* (Northern Region, Ghana)
+   - *Greater Accra Flash Flood* (Odaw Basin & Kwame Nkrumah Circle, Ghana)
+5. **🛰️ Multi-Format Ingestion**: Supports **GeoTIFF / TIFF (`.tif`, `.tiff`)**, **PNG**, **JPG**, **WEBP**, **BMP**, and NumPy arrays (**`.npy`, `.npz`**).
+6. **🧠 Explainable AI**: Feature importance analysis showing the predictive contribution of each spectral band (NDWI, NIR, Green, Red).
+7. **📊 Situation Telemetry**: Calculates flooded acreage, safe land percentage, and risk levels.
+8. **💾 Data Export**: Export classified flood masks (PNG), safety maps, and situation reports (JSON).
 
 ---
 
