@@ -101,11 +101,17 @@ Evaluation performed on synthetic and co-registered multi-spectral satellite flo
 
 ## 🌟 Key Capabilities
 
-1. **Multi-Format Ingestion**: Ingests **GeoTIFF / TIFF (`.tif`, `.tiff`)**, **PNG**, **JPG**, **WEBP**, **BMP**, and NumPy arrays (**`.npy`, `.npz`**).
-2. **Explainable AI (XAI)**: Feature importance analysis detailing spectral band weight distributions (e.g. NDWI vs NIR vs SAR VV).
-3. **Mission-Control HUD**: Instant calculation of flooded acreage, safe land percentages, and crisis severity ratings (Critical / Elevated / Moderate / Minimal).
-4. **Automated Situation Briefing**: Machine-readable JSON export conforming to UN-OCHA disaster information standards.
-5. **Pre-packaged Benchmarks**: Zero-configuration testing with 3 built-in remote sensing scenarios (Riverine Breach, Coastal Storm Surge, Agricultural Flash Flood).
+1. **🗺️ Live OpenStreetMap (OSM) Integration**: Georeferences satellite flood boundaries directly onto street-level OpenStreetMap tiles and high-res satellite basemaps. Plots A* computed evacuation paths on real road networks with GPS waypoints.
+2. **🌓 Light & Dark Theme Toggle**: Switch seamlessly between Mission Control (Dark) and Operations Center (Light) visual themes.
+3. **📱 Mobile-Responsive Architecture**: Fluid multi-card HUD, adaptive tab layouts, and touch-optimized controls designed for mobile phone screens and tablets.
+4. **🇵🇰 🇺🇸 🇩🇪 Historic Disaster Benchmarks**: Pre-loaded with real-world disaster georeferences:
+   - *Indus River Basin Mega-Flood* (Sindh, Pakistan — 2022)
+   - *Buffalo Bayou Storm Surge* (Houston, TX — Hurricane Harvey 2017)
+   - *Ahr Valley Flash Flood* (Rhineland-Palatinate, Germany — 2021)
+5. **🛰️ Multi-Format Ingestion**: Ingests **GeoTIFF / TIFF (`.tif`, `.tiff`)**, **PNG**, **JPG**, **WEBP**, **BMP**, and NumPy arrays (**`.npy`, `.npz`**).
+6. **🧠 Explainable AI (XAI)**: Feature importance analysis detailing spectral band weight distributions (NDWI vs NIR vs SAR VV).
+7. **🚨 Mission-Control HUD**: Instant calculation of flooded acreage, safe land percentages, and crisis severity ratings (Critical / Elevated / Moderate / Minimal).
+8. **💾 Automated Situation Briefing**: Machine-readable JSON export conforming to UN-OCHA disaster information standards.
 
 ---
 
